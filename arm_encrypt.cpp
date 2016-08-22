@@ -124,7 +124,7 @@ void Dialog::encryptImage(){
 //    fp_pimage.open("../data/plain_image.txt");
     for(i=0; i<height; i++){
         for(j=0; j<width; j++){
-            value = pimage->pixel(j, i);     // row first;
+            value = pimage->pixel(i, j);     // row first;
             r[i*width+j] = qRed(value);
             g[i*width+j] = qGreen(value);
             b[i*width+j] = qBlue(value);
@@ -147,9 +147,9 @@ void Dialog::encryptImage(){
 //    ofstream fp_cimage;
 //    fp_cimage.open("../data/cipher_image.txt");
 //    for(index=0; index<65536; index++){
-//        fp_cimage << r_scramble[index] << " "
-//                  << g_scramble[index] << " "
-//                  << b_scramble[index] << endl;
+//        fp_cimage << r_encrypt[index] << " "
+//                  << g_encrypt[index] << " "
+//                  << b_encrypt[index] << endl;
 //    }
 //    fp_cimage.close();
     delete [] r;
@@ -226,7 +226,7 @@ void Dialog::decryptImage(){
     QRgb value;
     for(i=0; i<height; i++){
         for(j=0; j<width; j++){
-            value = cimage->pixel(j, i);     // row first;
+            value = cimage->pixel(i, j);     // row first;
             r_encrypt[i*width+j] = qRed(value);
             g_encrypt[i*width+j] = qGreen(value);
             b_encrypt[i*width+j] = qBlue(value);
