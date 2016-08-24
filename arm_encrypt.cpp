@@ -156,7 +156,15 @@ void Dialog::encryptImage(){
     delete [] g;
     delete [] b;
     /*------------- pixel value encryption -------------*/
-    double x1,x2,x3,x4,x5,x6,x7,x8;
+//    X1=-581;X2=421;X3=233;X4=-347;X5=-21;X6=13;X7=-63;X8=-603;
+//    ofstream fp_chaotic_seq;
+//    fp_chaotic_seq.open("../data/chaotic_sequence_encrypt.txt");
+//    fp_chaotic_seq << X1 << "," << X2 << "," << X3 << "," << X4 << ","
+//                   << X5 << "," << X6 << "," << X7 << "," << X8 << endl;
+//    fp_chaotic_seq.close();
+    float x1,x2,x3,x4,x5,x6,x7,x8;
+//    ofstream fp_xor_val;
+//    fp_xor_val.open("../data/chaotic_sequence_encrypt.txt");
     for(index=0; index<65536; index++){
         r_encrypt[index] = r_encrypt[index] ^ ((int)X1 % 256);
         g_encrypt[index] = g_encrypt[index] ^ ((int)X2 % 256);
@@ -174,13 +182,14 @@ void Dialog::encryptImage(){
                 +(B1*r_encrypt[index])%E1 +(B2*g_encrypt[index])%E2;
         x8 = A81*r_encrypt[index] +A82*g_encrypt[index] +A83*b_encrypt[index] +A84*X4 +A85*X5 +A86*X6 +A87*X7 +A88*X8
                 +(B2*g_encrypt[index])%E2 +(B3*b_encrypt[index])%E3;
+//        fp_xor_val << X4 << ",";
         X1=x1, X2=x2, X3=x3, X4=x4, X5=x5, X6=x6, X7=x7, X8=x8;
     }
+//    fp_xor_val.close();
     /*------------------ show image -------------------*/
 //    QByteArray image_byte_array = QByteArray((const char*)rgb_buffer, byte_count);
 //    uchar *trans_data = (uchar*)image_byte_array.data();
 //    QImage *cimage = new QImage(trans_data, width, height, QImage::Format_RGB888);
-//    QMessageBox::information(this, "", "");
     QImage *cimage = new QImage(width, height, QImage::Format_RGB888);
     for(i=0; i<height; i++){
         for(j=0; j<width; j++){
@@ -233,7 +242,15 @@ void Dialog::decryptImage(){
         }
     }
     /*------------- pixel value decryption -------------*/
-    double x1,x2,x3,x4,x5,x6,x7,x8;
+//    X1=-581;X2=421;X3=233;X4=-347;X5=-21;X6=13;X7=-63;X8=-603;
+//    ofstream fp_chaotic_seq;
+//    fp_chaotic_seq.open("../data/chaotic_sequence_decrypt.txt");
+//    fp_chaotic_seq << X1 << "," << X2 << "," << X3 << "," << X4 << ","
+//                   << X5 << "," << X6 << "," << X7 << "," << X8 << endl;
+//    fp_chaotic_seq.close();
+    float x1,x2,x3,x4,x5,x6,x7,x8;
+//    ofstream fp_xor_val;
+//    fp_xor_val.open("../data/chaotic_sequence_decrypt.txt");
     for(index=0; index<65536; index++){
         x1 = A11*X1 +A12*X2 +A13*X3 +A14*X4 +A15*X5 +A16*X6 +A17*X7 +A18*X8;
         x2 = A21*X1 +A22*X2 +A23*X3 +A24*X4 +A25*X5 +A26*X6 +A27*X7 +A28*X8;
@@ -251,8 +268,10 @@ void Dialog::decryptImage(){
         r_encrypt[index] = r_encrypt[index] ^ ((int)X1 % 256);
         g_encrypt[index] = g_encrypt[index] ^ ((int)X2 % 256);
         b_encrypt[index] = b_encrypt[index] ^ ((int)X3 % 256);
+//        fp_xor_val << X4 << ",";
         X1=x1, X2=x2, X3=x3, X4=x4, X5=x5, X6=x6, X7=x7, X8=x8;
     }
+//    fp_xor_val.close();
     /*--------- anti pixel position scrambling ----------*/
     uchar *r_decrypt = new uchar[height*width];
     uchar *g_decrypt = new uchar[height*width];
@@ -276,6 +295,9 @@ void Dialog::decryptImage(){
             aimage->setPixel(i, j, value);
         }
     }
+    delete [] r_decrypt;
+    delete [] g_decrypt;
+    delete [] b_decrypt;
     m_label_cipher_image->setPixmap(QPixmap::fromImage(*aimage));
 
     QString a_path_img = QFileDialog::getSaveFileName(this,
@@ -285,4 +307,6 @@ void Dialog::decryptImage(){
                                             );
     aimage->save(a_path_img,"bmp");
     m_image_path->setText(a_path_img);
+
+    delete aimage;
 }
