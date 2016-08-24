@@ -163,9 +163,10 @@ void Dialog::encryptImage(){
 //                   << X5 << "," << X6 << "," << X7 << "," << X8 << endl;
 //    fp_chaotic_seq.close();
     float x1,x2,x3,x4,x5,x6,x7,x8;
-//    ofstream fp_xor_val;
-//    fp_xor_val.open("../data/chaotic_sequence_encrypt.txt");
+    ofstream fp_xor_val;
+    fp_xor_val.open("../data/chaotic_sequence_encrypt.txt");
     for(index=0; index<65536; index++){
+        fp_xor_val << (int)r_encrypt[index] << "\txor\t";
         r_encrypt[index] = r_encrypt[index] ^ ((int)X1 % 256);
         g_encrypt[index] = g_encrypt[index] ^ ((int)X2 % 256);
         b_encrypt[index] = b_encrypt[index] ^ ((int)X3 % 256);
@@ -182,10 +183,10 @@ void Dialog::encryptImage(){
                 +(B1*r_encrypt[index])%E1 +(B2*g_encrypt[index])%E2;
         x8 = A81*r_encrypt[index] +A82*g_encrypt[index] +A83*b_encrypt[index] +A84*X4 +A85*X5 +A86*X6 +A87*X7 +A88*X8
                 +(B2*g_encrypt[index])%E2 +(B3*b_encrypt[index])%E3;
-//        fp_xor_val << X4 << ",";
+        fp_xor_val << (int)X1 % 256 << "\t= " << (int)r_encrypt[index] << endl;
         X1=x1, X2=x2, X3=x3, X4=x4, X5=x5, X6=x6, X7=x7, X8=x8;
     }
-//    fp_xor_val.close();
+    fp_xor_val.close();
     /*------------------ show image -------------------*/
 //    QByteArray image_byte_array = QByteArray((const char*)rgb_buffer, byte_count);
 //    uchar *trans_data = (uchar*)image_byte_array.data();
